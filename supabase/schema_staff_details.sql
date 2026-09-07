@@ -1,0 +1,10 @@
+-- Update schema tabel staff untuk detail guru
+
+ALTER TABLE staff
+ADD COLUMN IF NOT EXISTS background_image_url TEXT,
+ADD COLUMN IF NOT EXISTS education TEXT,
+ADD COLUMN IF NOT EXISTS quote TEXT,
+ADD COLUMN IF NOT EXISTS email TEXT,
+ADD COLUMN IF NOT EXISTS phone TEXT,
+ADD COLUMN IF NOT EXISTS subjects TEXT,
+ADD COLUMN IF NOT EXISTS skills TEXT;
