@@ -222,7 +222,7 @@ export function StaffAdmin() {
         <div className="bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 p-6">
           <h3 className="font-bold text-lg mb-2 text-slate-900 dark:text-white flex items-center gap-2">
             <span className="w-7 h-7 rounded-full bg-primary-start text-white text-sm flex items-center justify-center font-bold">1</span>
-            Download Template CSV
+            Download Template Excel
           </h3>
           <p className="text-sm text-slate-500 dark:text-slate-400 mb-4">
             Download template di bawah, isi data guru/staf (satu baris = satu orang). Kolom foto dan background akan diisi manual setelah import.
@@ -235,7 +235,7 @@ export function StaffAdmin() {
             className="flex items-center gap-2 px-5 py-2.5 bg-green-600 hover:bg-green-700 text-white rounded-lg font-semibold transition-colors text-sm"
           >
             <Download className="w-4 h-4" />
-            Download Template (CSV)
+            Download Template (Excel)
           </button>
         </div>
 
@@ -243,12 +243,12 @@ export function StaffAdmin() {
         <div className="bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 p-6">
           <h3 className="font-bold text-lg mb-2 text-slate-900 dark:text-white flex items-center gap-2">
             <span className="w-7 h-7 rounded-full bg-primary-start text-white text-sm flex items-center justify-center font-bold">2</span>
-            Upload File CSV
+            Upload File Excel
           </h3>
           <input
             ref={importFileRef}
             type="file"
-            accept=".csv"
+            accept=".xlsx,.xls"
             onChange={handleFileSelect}
             className="hidden"
           />
@@ -257,7 +257,7 @@ export function StaffAdmin() {
             className="flex items-center gap-2 px-5 py-2.5 border-2 border-dashed border-slate-300 dark:border-slate-600 hover:border-primary-start rounded-lg text-slate-600 dark:text-slate-400 hover:text-primary-start transition-colors text-sm font-medium w-full justify-center"
           >
             <Upload className="w-5 h-5" />
-            Pilih File CSV
+            Pilih File Excel (.xlsx)
           </button>
         </div>
 
@@ -432,7 +432,7 @@ export function StaffAdmin() {
             className="flex items-center gap-2 px-4 py-2 border border-slate-300 dark:border-slate-600 rounded-lg text-sm font-semibold text-slate-700 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors"
           >
             <Upload className="w-4 h-4" />
-            Import CSV
+            Import Excel
           </button>
           <Button onClick={() => setView('form')} className="gap-2"><Plus className="w-4 h-4" /> Tambah Data</Button>
         </div>
