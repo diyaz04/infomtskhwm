@@ -92,3 +92,8 @@ export interface ActivityVideo {
   display_order: number;
   created_at: string;
 }
+
+export interface SiteSetting {
+  key: string;
+  value: string;
+}

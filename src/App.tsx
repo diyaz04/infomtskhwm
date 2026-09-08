@@ -18,6 +18,7 @@ import { OpinionsAdmin } from './pages/admin/OpinionsAdmin';
 import { StaffAdmin } from './pages/admin/StaffAdmin';
 import { ProgramsAdmin } from './pages/admin/ProgramsAdmin';
 import { VideosAdmin } from './pages/admin/VideosAdmin';
+import { FooterAdmin } from './pages/admin/FooterAdmin';
 
 function App() {
   return (
@@ -32,6 +33,7 @@ function App() {
           <Route path="guru-staf" element={<StaffAdmin />} />
           <Route path="program-unggulan" element={<ProgramsAdmin />} />
           <Route path="video" element={<VideosAdmin />} />
+          <Route path="footer" element={<FooterAdmin />} />
         </Route>
 
         {/* Public Routes */}

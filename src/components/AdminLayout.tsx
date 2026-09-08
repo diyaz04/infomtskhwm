@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { Navigate, Outlet, Link, useNavigate } from 'react-router-dom';
 import { supabase } from '../lib/supabase';
-import { LogOut, BookOpen, Newspaper, MessageSquare, Users, Star, Video } from 'lucide-react';
+import { LogOut, BookOpen, Newspaper, MessageSquare, Users, Star, Video, Settings } from 'lucide-react';
 
 export function AdminLayout() {
   const [session, setSession] = useState<any>(null);
@@ -63,6 +63,9 @@ export function AdminLayout() {
           </Link>
           <Link to="/admin/video" className="flex items-center gap-3 px-3 py-2 rounded-md hover:bg-slate-100 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-300 font-medium">
             <Video className="w-5 h-5" /> Video Kegiatan
+          </Link>
+          <Link to="/admin/footer" className="flex items-center gap-3 px-3 py-2 rounded-md hover:bg-slate-100 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-300 font-medium">
+            <Settings className="w-5 h-5" /> Pengaturan Footer
           </Link>
         </nav>
 
