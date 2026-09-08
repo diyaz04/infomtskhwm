@@ -1,4 +1,4 @@
-﻿import { useRef, useEffect, useState, useCallback } from 'react';
+import { useRef, useEffect, useState, useCallback } from 'react';
 import QRCode from 'qrcode';
 import { Download, X, Loader2, RefreshCw, ImageIcon } from 'lucide-react';
 import { formatDate } from '../lib/utils';
@@ -96,8 +96,8 @@ function coverCrop(imgW: number, imgH: number, dstW: number, dstH: number) {
 // ── Layout constants (tuned to template 828×1035) ─────────────────────────────
 const W = 828, H = 1035;
 const IMG_X = 50,  IMG_Y = 122, IMG_W = 728, IMG_H = 432, IMG_R = 26;
-const TITLE_X = 50, TITLE_Y = 578, TITLE_LH = 64, TITLE_MAX_W = 728;
-const EXRP_X  = 50, EXRP_LH  = 38, EXRP_MAX_W  = 728;
+const TITLE_X = 50, TITLE_Y = 578, TITLE_LH = 48, TITLE_MAX_W = 728;
+const EXRP_X  = 50, EXRP_LH  = 30, EXRP_MAX_W  = 728;
 const QR_X = 570, QR_Y = 768, QR_SIZE = 220;
 
 // ── Component ─────────────────────────────────────────────────────────────────
@@ -153,16 +153,16 @@ export function FlyerGenerator({ data, onClose }: Props) {
       ctx.restore();
 
       // 3. Title (bold, max 2 lines)
-      ctx.font          = 'bold 50px system-ui, -apple-system, Arial, sans-serif';
+      ctx.font          = 'bold 40px system-ui, -apple-system, Arial, sans-serif';
       ctx.fillStyle     = '#0f172a';
       ctx.textBaseline  = 'top';
       ctx.textAlign     = 'left';
       const titleLines  = wrapText(ctx, data.title, TITLE_X, TITLE_Y, TITLE_MAX_W, TITLE_LH, 2);
 
       // 4. Excerpt (max 3 lines, dynamic Y after title)
-      const excerptY = TITLE_Y + titleLines * TITLE_LH + 14;
+      const excerptY = TITLE_Y + titleLines * TITLE_LH + 12;
       const excerpt  = stripHtml(data.content);
-      ctx.font       = '27px system-ui, -apple-system, Arial, sans-serif';
+      ctx.font       = '22px system-ui, -apple-system, Arial, sans-serif';
       ctx.fillStyle  = '#334155';
       wrapText(ctx, excerpt, EXRP_X, excerptY, EXRP_MAX_W, EXRP_LH, 3);
 
