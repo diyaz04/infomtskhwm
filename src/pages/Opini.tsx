@@ -16,6 +16,7 @@ export function Opini() {
         const { data, error } = await supabase
           .from('opinions')
           .select('*')
+          .eq('status', 'published')
           .order('published_at', { ascending: false });
 
         if (error) throw error;
@@ -48,14 +49,17 @@ export function Opini() {
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           {opinions.map(opinion => (
-            <article key={opinion.id} className="bg-white dark:bg-slate-900 rounded-xl p-6 shadow-sm border border-slate-200 dark:border-slate-800 flex flex-col hover:shadow-md transition-shadow">
-              
+            <article key={opinion.id} className="bg-white dark:bg-slate-900 rounded-xl p-6 shadow-sm border border-slate-200 dark:border-slate-800 flex flex-col hover:shadow-md transition-shadow relative">
+              <div className="absolute top-4 right-4 bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 text-xs font-semibold px-2.5 py-1 rounded-md">
+                Sumber: {opinion.source || 'Redaksi'}
+              </div>
+
               <div className="flex items-center gap-4 mb-5 border-b border-slate-100 dark:border-slate-800 pb-4">
                 <div className="w-12 h-12 rounded-full bg-slate-100 dark:bg-slate-800 flex items-center justify-center flex-shrink-0 text-slate-400">
                   <UserCircle className="w-8 h-8" />
                 </div>
                 <div>
-                  <h3 className="font-bold text-slate-900 dark:text-white">{opinion.author_name}</h3>
+                  <h3 className="font-bold text-slate-900 dark:text-white pr-20">{opinion.author_name}</h3>
                   {opinion.author_role && (
                     <p className="text-xs text-slate-500 dark:text-slate-400">{opinion.author_role}</p>
                   )}

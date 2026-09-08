@@ -3,7 +3,7 @@ import { useParams, Link as RouterLink } from 'react-router-dom';
 import { ArrowLeft, Calendar, User, ThumbsUp, MessageCircle, Share2, Check, ImageIcon } from 'lucide-react';
 import { supabase } from '../lib/supabase';
 import { type News, type NewsComment } from '../types';
-import { formatDate } from '../lib/utils';
+import { formatDate, getTiktokId } from '../lib/utils';
 import { Button } from '../components/Button';
 import { clsx } from 'clsx';
 import { FlyerGenerator, type FlyerData } from '../components/FlyerGenerator';
@@ -161,11 +161,30 @@ export function BeritaDetail() {
       </div>
 
       <article>
-        {news.category && (
-          <span className="inline-block text-sm font-semibold text-primary-start bg-green-50 dark:bg-green-900/20 px-3 py-1 rounded-full mb-4">
-            {news.category}
-          </span>
-        )}
+        <div className="flex flex-wrap items-center gap-2 mb-4">
+          {news.category && (
+            <span className="inline-block text-sm font-semibold text-primary-start bg-green-50 dark:bg-green-900/20 px-3 py-1 rounded-full">
+              {news.category}
+            </span>
+          )}
+          {news.source === 'instagram' ? (
+            news.source_url ? (
+              <a href={news.source_url} target="_blank" rel="noreferrer" className="inline-flex items-center gap-1.5 text-sm font-bold text-white bg-gradient-to-r from-pink-500 to-purple-600 px-3 py-1 rounded-full hover:shadow-md transition-shadow">
+                <svg className="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg>
+                Instagram
+              </a>
+            ) : (
+              <span className="inline-flex items-center gap-1.5 text-sm font-bold text-white bg-gradient-to-r from-pink-500 to-purple-600 px-3 py-1 rounded-full">
+                <svg className="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg>
+                Instagram
+              </span>
+            )
+          ) : news.source && news.source !== 'manual' && news.source !== 'Redaksi' ? (
+            <span className="inline-block text-sm font-semibold text-slate-600 dark:text-slate-300 bg-slate-100 dark:bg-slate-800 px-3 py-1 rounded-full">
+              Sumber: {news.source}
+            </span>
+          ) : null}
+        </div>
         
         <h1 className="text-3xl md:text-4xl font-bold text-slate-900 dark:text-white mb-6 leading-tight">
           {news.title}
@@ -191,9 +210,20 @@ export function BeritaDetail() {
         )}
 
         <div 
-          className="prose prose-slate dark:prose-invert max-w-none prose-a:text-primary-start hover:prose-a:text-primary-hoverStart mb-12"
+          className="prose prose-slate dark:prose-invert max-w-none prose-a:text-primary-start hover:prose-a:text-primary-hoverStart mb-10"
           dangerouslySetInnerHTML={{ __html: news.content }}
         />
+
+        {news.tiktok_url && getTiktokId(news.tiktok_url) && (
+          <div className="mb-12 w-full max-w-sm mx-auto">
+            <iframe 
+              src={`https://www.tiktok.com/embed/v2/${getTiktokId(news.tiktok_url)}`} 
+              className="w-full aspect-[9/16] rounded-xl border border-slate-200 shadow-sm"
+              allowFullScreen
+              allow="encrypted-media;"
+            ></iframe>
+          </div>
+        )}
       </article>
 
       {/* Interactions (Like & Share) */}

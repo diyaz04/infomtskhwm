@@ -60,8 +60,12 @@ export function OpiniDetail() {
         </Link>
       </div>
 
-      <article className="bg-white dark:bg-slate-900 rounded-2xl p-6 md:p-10 shadow-sm border border-slate-200 dark:border-slate-800">
-        <h1 className="text-3xl md:text-4xl font-bold text-slate-900 dark:text-white mb-8 leading-tight text-center">
+      <article className="bg-white dark:bg-slate-900 rounded-2xl p-6 md:p-10 shadow-sm border border-slate-200 dark:border-slate-800 relative">
+        <div className="absolute top-4 right-4 bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 text-xs font-semibold px-3 py-1.5 rounded-full">
+          Sumber: {opinion.source || 'Redaksi'}
+        </div>
+        
+        <h1 className="text-3xl md:text-4xl font-bold text-slate-900 dark:text-white mb-8 leading-tight text-center mt-6">
           {opinion.title}
         </h1>
 

@@ -245,15 +245,24 @@ export function Home() {
               ))}
             </div>
 
-            {/* Grid Berita */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
               {paginatedNews.map(news => (
                 <Link key={news.id} to={`/berita/${news.slug}`} className="flex gap-4 group">
-                  <div className="w-24 h-24 shrink-0 rounded-lg overflow-hidden bg-slate-100 dark:bg-slate-800">
+                  <div className="w-24 h-24 shrink-0 rounded-lg overflow-hidden bg-slate-100 dark:bg-slate-800 relative">
                     {news.cover_image_url && <img src={optimizeCloudinaryUrl(news.cover_image_url)} alt={news.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform" />}
                   </div>
                   <div className="flex flex-col py-1">
-                    <span className="text-xs text-primary-start font-bold mb-1">{news.category}</span>
+                    <div className="flex items-center gap-2 mb-1">
+                      <span className="text-xs text-primary-start font-bold">{news.category}</span>
+                      {news.source === 'instagram' ? (
+                        <span className="bg-gradient-to-r from-pink-500 to-purple-600 text-white text-[10px] px-1.5 py-0.5 rounded flex items-center gap-1">
+                          <svg className="w-2.5 h-2.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg>
+                          Instagram
+                        </span>
+                      ) : news.source && news.source !== 'manual' && news.source !== 'Redaksi' ? (
+                        <span className="text-[10px] bg-slate-100 dark:bg-slate-700 text-slate-500 px-1.5 py-0.5 rounded">{news.source}</span>
+                      ) : null}
+                    </div>
                     <h4 className="font-bold text-slate-900 dark:text-slate-100 leading-tight line-clamp-3 group-hover:text-primary-start transition-colors">
                       {news.title}
                     </h4>
@@ -290,6 +299,9 @@ export function Home() {
                     // Featured Opini
                     <div className="relative w-full aspect-[4/5] rounded-xl overflow-hidden shadow-sm mb-4">
                       {op.cover_image_url && <img src={optimizeCloudinaryUrl(op.cover_image_url)} alt={op.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />}
+                      <div className="absolute top-3 right-3 bg-white/90 dark:bg-slate-800/90 text-[10px] font-bold px-2 py-1 rounded shadow-sm">
+                        {op.source || 'Redaksi'}
+                      </div>
                       <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent flex flex-col justify-end p-5">
                         <div className="text-primary-start font-bold text-sm mb-1">{op.author_name}</div>
                         <h4 className="text-white font-bold text-lg leading-tight group-hover:text-green-300 transition-colors">{op.title}</h4>
@@ -302,7 +314,10 @@ export function Home() {
                         {op.cover_image_url && <img src={optimizeCloudinaryUrl(op.cover_image_url)} alt={op.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform" />}
                       </div>
                       <div className="flex flex-col py-0.5">
-                        <div className="text-primary-start text-xs font-bold mb-1">{op.author_name}</div>
+                        <div className="flex items-center justify-between mb-1">
+                          <div className="text-primary-start text-xs font-bold">{op.author_name}</div>
+                          <span className="text-[9px] bg-slate-100 dark:bg-slate-700 text-slate-500 px-1.5 py-0.5 rounded">{op.source || 'Redaksi'}</span>
+                        </div>
                         <h4 className="font-bold text-slate-900 dark:text-slate-100 text-sm leading-tight line-clamp-2 group-hover:text-primary-start transition-colors">
                           {op.title}
                         </h4>

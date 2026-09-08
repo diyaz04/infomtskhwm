@@ -7,6 +7,10 @@ export interface News {
   category: string | null;
   author_name: string | null;
   status: string;
+  source?: string;
+  source_url?: string | null;
+  source_post_id?: string | null;
+  tiktok_url?: string | null;
   published_at: string | null;
   created_at: string;
   updated_at: string;
@@ -30,6 +34,7 @@ export interface Opinion {
   author_name: string;
   author_role: string | null;
   status: string;
+  source?: string;
   published_at: string | null;
   created_at: string;
 }
@@ -42,6 +47,7 @@ export interface BuletinEdition {
   original_pdf_url: string | null;
   total_pages: number;
   status: string;
+  source?: string;
   published_at: string | null;
   created_at: string;
 }

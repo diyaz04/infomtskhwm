@@ -16,6 +16,7 @@ export function Buletin() {
         const { data, error } = await supabase
           .from('buletin_editions')
           .select('*')
+          .eq('status', 'published')
           .order('published_at', { ascending: false });
 
         if (error) throw error;
@@ -53,8 +54,11 @@ export function Buletin() {
             <div 
               key={edition.id}
               onClick={() => setSelectedEdition(edition)}
-              className="group cursor-pointer flex flex-col"
+              className="group cursor-pointer flex flex-col relative"
             >
+              <div className="absolute top-2 left-2 z-10 bg-white/90 dark:bg-slate-800/90 backdrop-blur-sm text-xs font-semibold px-2 py-1 rounded shadow-sm border border-white/20">
+                {edition.source || 'Redaksi'}
+              </div>
               <div className="relative aspect-[3/4] rounded-lg overflow-hidden shadow-md mb-4 border border-slate-200 dark:border-slate-800 group-hover:shadow-xl transition-all group-hover:-translate-y-1">
                 {edition.cover_image_url ? (
                   <img 
