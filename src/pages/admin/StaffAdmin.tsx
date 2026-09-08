@@ -228,7 +228,7 @@ export function StaffAdmin() {
             Download template di bawah, isi data guru/staf (satu baris = satu orang). Kolom foto dan background akan diisi manual setelah import.
           </p>
           <div className="bg-slate-50 dark:bg-slate-900 rounded-lg p-4 text-xs font-mono text-slate-600 dark:text-slate-400 mb-4 overflow-x-auto whitespace-nowrap">
-            {CSV_HEADERS.join(' | ')}
+            {EXCEL_HEADERS.join(' | ')}
           </div>
           <button
             onClick={downloadTemplate}
