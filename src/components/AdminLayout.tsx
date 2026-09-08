@@ -74,6 +74,9 @@ export function AdminLayout() {
               <Link to="/admin/footer" className="flex items-center gap-3 px-3 py-2 rounded-md hover:bg-slate-100 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-300 font-medium">
                 <Settings className="w-5 h-5" /> Pengaturan Footer
               </Link>
+              <Link to="/admin/akun-osis" className="flex items-center gap-3 px-3 py-2 rounded-md hover:bg-slate-100 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-300 font-medium">
+                <Users className="w-5 h-5" /> Kelola Akun OSIS
+              </Link>
             </>
           )}
         </nav>

@@ -20,6 +20,8 @@ import { ProgramsAdmin } from './pages/admin/ProgramsAdmin';
 import { VideosAdmin } from './pages/admin/VideosAdmin';
 import { FooterAdmin } from './pages/admin/FooterAdmin';
 
+import { AkunOsisAdmin } from './pages/admin/AkunOsisAdmin';
+
 function App() {
   return (
     <BrowserRouter>
@@ -34,6 +36,7 @@ function App() {
           <Route path="program-unggulan" element={<ProgramsAdmin />} />
           <Route path="video" element={<VideosAdmin />} />
           <Route path="footer" element={<FooterAdmin />} />
+          <Route path="akun-osis" element={<AkunOsisAdmin />} />
         </Route>
 
         {/* Public Routes */}
