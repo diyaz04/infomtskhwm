@@ -1,0 +1,40 @@
+﻿name: Keep Supabase Alive
+
+on:
+  schedule:
+    # Setiap 5 hari sekali, jam 00:00 UTC
+    # (GitHub Actions tidak support "*/5 days", jadi pakai hari tertentu)
+    # Jadwal: hari ke-1, 6, 11, 16, 21, 26 setiap bulan = ~setiap 5 hari
+    - cron: '0 0 1,6,11,16,21,26 * *'
+  workflow_dispatch: # Bisa dijalankan manual dari GitHub
+
+jobs:
+  ping-supabase:
+    name: Ping Supabase Database
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Ping Supabase REST API
+        run: |
+          echo "=== Pinging Supabase to prevent inactivity pause ==="
+          echo "Timestamp: $(date -u)"
+
+          RESPONSE=$(curl -s -o /dev/null -w "%{http_code}" \
+            -X GET \
+            "${{ secrets.VITE_SUPABASE_URL }}/rest/v1/site_settings?select=key&limit=1" \
+            -H "apikey: ${{ secrets.VITE_SUPABASE_ANON_KEY }}" \
+            -H "Authorization: Bearer ${{ secrets.VITE_SUPABASE_ANON_KEY }}")
+
+          echo "HTTP Status: $RESPONSE"
+
+          if [ "$RESPONSE" = "200" ] || [ "$RESPONSE" = "406" ]; then
+            echo "✅ Supabase is alive and responding!"
+          else
+            echo "⚠️  Unexpected response: $RESPONSE"
+            exit 1
+          fi
+
+      - name: Log success
+        run: |
+          echo "✅ Keep-alive ping completed at $(date -u)"
+          echo "Next ping will run in ~5 days."
