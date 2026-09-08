@@ -1,15 +1,17 @@
 import { useEffect, useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
-import { ArrowLeft, UserCircle, Calendar } from 'lucide-react';
+import { ArrowLeft, UserCircle, Calendar, ImageIcon } from 'lucide-react';
 import { supabase } from '../lib/supabase';
 import { type Opinion } from '../types';
 import { formatDate } from '../lib/utils';
 import { Button } from '../components/Button';
+import { FlyerGenerator, type FlyerData } from '../components/FlyerGenerator';
 
 export function OpiniDetail() {
   const { slug } = useParams<{ slug: string }>();
   const [opinion, setOpinion] = useState<Opinion | null>(null);
   const [loading, setLoading] = useState(true);
+  const [showFlyer, setShowFlyer] = useState(false);
 
   useEffect(() => {
     async function fetchDetail() {
@@ -49,6 +51,7 @@ export function OpiniDetail() {
   }
 
   return (
+    <>
     <div className="max-w-3xl mx-auto py-8">
       <div className="mb-8">
         <Link to="/opini" className="inline-flex items-center text-sm font-medium text-slate-500 hover:text-primary-start transition-colors">
@@ -91,7 +94,34 @@ export function OpiniDetail() {
           className="prose prose-slate dark:prose-invert max-w-none prose-lg prose-p:leading-relaxed prose-a:text-primary-start hover:prose-a:text-primary-hoverStart"
           dangerouslySetInnerHTML={{ __html: opinion.content }}
         />
+        
+        {/* Tombol Flyer */}
+        <div className="mt-10 pt-6 border-t border-slate-200 dark:border-slate-800 flex justify-center">
+          <button
+            onClick={() => setShowFlyer(true)}
+            className="flex items-center gap-2 px-6 py-3 rounded-full bg-emerald-100 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-400 hover:bg-emerald-200 dark:hover:bg-emerald-900/50 transition-colors font-medium shadow-sm"
+          >
+            <ImageIcon className="w-5 h-5" />
+            Buat Flyer Opini
+          </button>
+        </div>
       </article>
     </div>
+
+    {/* Flyer Generator Modal */}
+    {showFlyer && opinion && (
+      <FlyerGenerator
+        data={{
+          title: opinion.title,
+          content: opinion.content,
+          coverImageUrl: opinion.cover_image_url,
+          publishedAt: opinion.published_at,
+          createdAt: opinion.created_at,
+          articleUrl: window.location.href,
+        } satisfies FlyerData}
+        onClose={() => setShowFlyer(false)}
+      />
+    )}
+    </>
   );
 }

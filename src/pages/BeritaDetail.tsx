@@ -1,11 +1,12 @@
 import { useEffect, useState } from 'react';
 import { useParams, Link as RouterLink } from 'react-router-dom';
-import { ArrowLeft, Calendar, User, ThumbsUp, MessageCircle, Share2, Check } from 'lucide-react';
+import { ArrowLeft, Calendar, User, ThumbsUp, MessageCircle, Share2, Check, ImageIcon } from 'lucide-react';
 import { supabase } from '../lib/supabase';
 import { type News, type NewsComment } from '../types';
 import { formatDate } from '../lib/utils';
 import { Button } from '../components/Button';
 import { clsx } from 'clsx';
+import { FlyerGenerator, type FlyerData } from '../components/FlyerGenerator';
 
 export function BeritaDetail() {
   const { slug } = useParams<{ slug: string }>();
@@ -16,6 +17,7 @@ export function BeritaDetail() {
   const [likes, setLikes] = useState(0);
   const [hasLiked, setHasLiked] = useState(false);
   const [copied, setCopied] = useState(false);
+  const [showFlyer, setShowFlyer] = useState(false);
   
   // Comments state
   const [comments, setComments] = useState<NewsComment[]>([]);
@@ -149,6 +151,7 @@ export function BeritaDetail() {
   }
 
   return (
+    <>
     <div className="max-w-4xl mx-auto py-8 px-4 md:px-0">
       <div className="mb-6">
         <RouterLink to="/berita" className="inline-flex items-center text-sm font-medium text-slate-500 hover:text-primary-start transition-colors">
@@ -226,6 +229,15 @@ export function BeritaDetail() {
           <button onClick={handleShare} className="p-2.5 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors" title="Bagikan Link">
             {copied ? <Check className="w-5 h-5 text-green-600" /> : <Share2 className="w-5 h-5" />}
           </button>
+
+          <button
+            onClick={() => setShowFlyer(true)}
+            className="flex items-center gap-1.5 px-3 py-2 rounded-full bg-emerald-100 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-400 hover:bg-emerald-200 dark:hover:bg-emerald-900/50 transition-colors text-sm font-medium"
+            title="Buat Flyer"
+          >
+            <ImageIcon className="w-4 h-4" />
+            Flyer
+          </button>
         </div>
       </div>
 
@@ -285,5 +297,21 @@ export function BeritaDetail() {
         </div>
       </div>
     </div>
+
+    {/* Flyer Generator Modal */}
+    {showFlyer && news && (
+      <FlyerGenerator
+        data={{
+          title: news.title,
+          content: news.content,
+          coverImageUrl: news.cover_image_url,
+          publishedAt: news.published_at,
+          createdAt: news.created_at,
+          articleUrl: window.location.href,
+        } satisfies FlyerData}
+        onClose={() => setShowFlyer(false)}
+      />
+    )}
+    </>
   );
 }
