@@ -120,7 +120,7 @@ export function FlyerGenerator({ data, onClose }: Props) {
 
     try {
       // 1. Template background
-      const tpl = await loadImage('/flyer-template.png');
+      const tpl = await loadImage('/flayer-template.png');
       ctx.drawImage(tpl, 0, 0, W, H);
 
       // 2. Cover image with rounded-rect clip
