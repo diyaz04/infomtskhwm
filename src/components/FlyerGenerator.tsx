@@ -34,39 +34,27 @@ function stripHtml(html: string): string {
   return html.replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ').trim();
 }
 
-/** Wrap text on canvas; returns number of lines drawn */
-function wrapText(
+/** Split text into lines based on maxWidth */
+function getLines(
   ctx: CanvasRenderingContext2D,
   text: string,
-  x: number,
-  y: number,
-  maxWidth: number,
-  lineHeight: number,
-  maxLines: number,
-): number {
+  maxWidth: number
+): string[] {
   const words = text.split(' ');
-  let line = '';
-  let lineCount = 0;
+  const lines: string[] = [];
+  let currentLine = '';
 
   for (const word of words) {
-    const test = line ? line + ' ' + word : word;
-    if (ctx.measureText(test).width > maxWidth && line) {
-      if (lineCount === maxLines - 1) {
-        let truncated = line;
-        while (ctx.measureText(truncated + '...').width > maxWidth && truncated.length > 0)
-          truncated = truncated.slice(0, -1);
-        ctx.fillText(truncated + '...', x, y + lineCount * lineHeight);
-        return lineCount + 1;
-      }
-      ctx.fillText(line, x, y + lineCount * lineHeight);
-      line = word;
-      lineCount++;
+    const testLine = currentLine ? currentLine + ' ' + word : word;
+    if (ctx.measureText(testLine).width > maxWidth && currentLine) {
+      lines.push(currentLine);
+      currentLine = word;
     } else {
-      line = test;
+      currentLine = testLine;
     }
   }
-  if (line) ctx.fillText(line, x, y + lineCount * lineHeight);
-  return lineCount + 1;
+  if (currentLine) lines.push(currentLine);
+  return lines;
 }
 
 function roundedRectPath(ctx: CanvasRenderingContext2D, x: number, y: number, w: number, h: number, r: number) {
@@ -96,8 +84,8 @@ function coverCrop(imgW: number, imgH: number, dstW: number, dstH: number) {
 // ── Layout constants (tuned to template 828×1035) ─────────────────────────────
 const W = 828, H = 1035;
 const IMG_X = 50,  IMG_Y = 122, IMG_W = 728, IMG_H = 432, IMG_R = 26;
-const TITLE_X = 50, TITLE_Y = 578, TITLE_LH = 48, TITLE_MAX_W = 728;
-const EXRP_X  = 50, EXRP_LH  = 30, EXRP_MAX_W  = 728;
+const TITLE_X = 50, TITLE_Y = 578, TITLE_MAX_W = 728;
+const EXRP_X  = 50, EXRP_MAX_W  = 728;
 const QR_X = 618, QR_Y = 780, QR_SIZE = 170;
 
 // ── Component ─────────────────────────────────────────────────────────────────
@@ -152,27 +140,64 @@ export function FlyerGenerator({ data, onClose }: Props) {
       }
       ctx.restore();
 
-      // 3. Title (bold, max 2 lines)
-      ctx.font          = 'bold 40px system-ui, -apple-system, Arial, sans-serif';
-      ctx.fillStyle     = '#0f172a';
-      ctx.textBaseline  = 'top';
-      ctx.textAlign     = 'left';
-      const titleLines  = wrapText(ctx, data.title, TITLE_X, TITLE_Y, TITLE_MAX_W, TITLE_LH, 2);
+      // 3. Title (Dynamic Font Size)
+      let titleFontSize = 42;
+      let titleLines: string[] = [];
+      let titleLH = 0;
+      
+      while (titleFontSize >= 24) {
+        ctx.font = `bold ${titleFontSize}px system-ui, -apple-system, Arial, sans-serif`;
+        titleLines = getLines(ctx, data.title, TITLE_MAX_W);
+        titleLH = titleFontSize * 1.25;
+        if (titleLines.length <= 3) break;
+        titleFontSize -= 4;
+      }
 
-      // 4. Excerpt (max 3 lines, dynamic Y after title)
-      const excerptY = TITLE_Y + titleLines * TITLE_LH + 12;
-      const excerpt  = stripHtml(data.content);
-      ctx.font       = '22px system-ui, -apple-system, Arial, sans-serif';
-      ctx.fillStyle  = '#334155';
-      wrapText(ctx, excerpt, EXRP_X, excerptY, EXRP_MAX_W, EXRP_LH, 3);
+      ctx.fillStyle = '#0f172a';
+      ctx.textBaseline = 'top';
+      ctx.textAlign = 'left';
+      
+      let currentY = TITLE_Y - 10;
+      
+      // Draw Title
+      for (const line of titleLines.slice(0, 3)) {
+        ctx.fillText(line, TITLE_X, currentY);
+        currentY += titleLH;
+      }
 
-      // 5. Date label (right-aligned, sits on yellow/olive tab drawn by template)
-      const dateStr    = formatDate(data.publishedAt || data.createdAt);
-      ctx.font         = 'bold 22px system-ui, -apple-system, Arial, sans-serif';
-      ctx.fillStyle    = '#1a1a1a';
-      ctx.textAlign    = 'right';
-      ctx.textBaseline = 'middle';
-      ctx.fillText(dateStr, W - 18, 746);
+      currentY += 10; // gap
+
+      // 4. Excerpt
+      const excerpt = stripHtml(data.content);
+      ctx.font = '22px system-ui, -apple-system, Arial, sans-serif';
+      ctx.fillStyle = '#334155';
+      const excerptLH = 32;
+      const excerptLines = getLines(ctx, excerpt, EXRP_MAX_W);
+      
+      const MAX_Y = 720;
+      
+      for (let i = 0; i < excerptLines.length; i++) {
+        if (currentY + excerptLH > MAX_Y) break;
+        
+        let lineText = excerptLines[i];
+        if (currentY + excerptLH * 2 > MAX_Y && i < excerptLines.length - 1) {
+          lineText = lineText.replace(/\.+$/, '') + '...';
+          ctx.fillText(lineText, EXRP_X, currentY);
+          currentY += excerptLH;
+          break; 
+        }
+        
+        ctx.fillText(lineText, EXRP_X, currentY);
+        currentY += excerptLH;
+      }
+
+      // 5. Date label
+      const dateStr = formatDate(data.publishedAt || data.createdAt);
+      ctx.font = 'bold 20px system-ui, -apple-system, Arial, sans-serif';
+      ctx.fillStyle = '#1a1a1a';
+      ctx.textAlign = 'right';
+      ctx.textBaseline = 'bottom';
+      ctx.fillText(dateStr, W - 50, 755);
 
       // 6. QR Code (white rounded rect background + QR image)
       const qrDataUrl = await QRCode.toDataURL(data.articleUrl, {

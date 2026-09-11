@@ -210,7 +210,7 @@ export function BeritaDetail() {
         )}
 
         <div 
-          className="prose prose-slate dark:prose-invert max-w-none prose-a:text-primary-start hover:prose-a:text-primary-hoverStart mb-10"
+          className="prose prose-slate dark:prose-invert max-w-none prose-a:text-primary-start hover:prose-a:text-primary-hoverStart mb-10 whitespace-pre-line"
           dangerouslySetInnerHTML={{ __html: news.content }}
         />
 

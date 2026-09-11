@@ -95,7 +95,7 @@ export function OpiniDetail() {
         )}
 
         <div 
-          className="prose prose-slate dark:prose-invert max-w-none prose-lg prose-p:leading-relaxed prose-a:text-primary-start hover:prose-a:text-primary-hoverStart"
+          className="prose prose-slate dark:prose-invert max-w-none prose-lg prose-p:leading-relaxed prose-a:text-primary-start hover:prose-a:text-primary-hoverStart whitespace-pre-line"
           dangerouslySetInnerHTML={{ __html: opinion.content }}
         />
         
