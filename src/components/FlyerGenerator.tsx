@@ -98,7 +98,7 @@ const W = 828, H = 1035;
 const IMG_X = 50,  IMG_Y = 122, IMG_W = 728, IMG_H = 432, IMG_R = 26;
 const TITLE_X = 50, TITLE_Y = 578, TITLE_LH = 48, TITLE_MAX_W = 728;
 const EXRP_X  = 50, EXRP_LH  = 30, EXRP_MAX_W  = 728;
-const QR_X = 570, QR_Y = 768, QR_SIZE = 220;
+const QR_X = 618, QR_Y = 780, QR_SIZE = 170;
 
 // ── Component ─────────────────────────────────────────────────────────────────
 
@@ -176,7 +176,7 @@ export function FlyerGenerator({ data, onClose }: Props) {
 
       // 6. QR Code (white rounded rect background + QR image)
       const qrDataUrl = await QRCode.toDataURL(data.articleUrl, {
-        width: 200,
+        width: QR_SIZE,
         margin: 1,
         errorCorrectionLevel: 'M',
         color: { dark: '#000000ff', light: '#ffffffff' },
