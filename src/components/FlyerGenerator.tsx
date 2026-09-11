@@ -83,8 +83,8 @@ function coverCrop(imgW: number, imgH: number, dstW: number, dstH: number) {
 
 // ── Layout constants (tuned to template 828×1035) ─────────────────────────────
 const W = 828, H = 1035;
-const IMG_X = 50,  IMG_Y = 122, IMG_W = 728, IMG_H = 432, IMG_R = 26;
-const TITLE_X = 50, TITLE_Y = 578, TITLE_MAX_W = 728;
+const IMG_X = 50,  IMG_Y = 155, IMG_W = 728, IMG_H = 400, IMG_R = 26;
+const TITLE_X = 50, TITLE_Y = 580, TITLE_MAX_W = 728;
 const EXRP_X  = 50, EXRP_MAX_W  = 728;
 const QR_X = 618, QR_Y = 780, QR_SIZE = 170;
 
